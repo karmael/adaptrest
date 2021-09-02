@@ -1,0 +1,4 @@
+asgiref==3.4.1 # https://github.com/django/asgiref
+Django==3.2.7 # https://www.djangoproject.com/
+pytz==2021.1 # https://github.com/stub42/pytz
+sqlparse==0.4.1 # https://github.com/andialbrecht/sqlparse
