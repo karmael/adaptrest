@@ -1,4 +1,9 @@
-asgiref==3.4.1 # https://github.com/django/asgiref
-Django==3.2.7 # https://www.djangoproject.com/
-pytz==2021.1 # https://github.com/stub42/pytz
-sqlparse==0.4.1 # https://github.com/andialbrecht/sqlparse
+requests==2.24.0
+gevent==20.6.2
+Django==3.2.7
+python-dotenv==0.17.1
+PyJWT==1.7.1
+google-auth==1.30.1
+djangoql==0.14.0
+djangorestframework==3.11.1
+flake8==3.8.3
