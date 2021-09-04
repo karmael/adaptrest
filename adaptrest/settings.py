@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -27,9 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!9=3ya*j7xo(by-ni&chf@4u1*8(_wlg&s4c7s#56sj42*$79x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEPLOY') == 'local'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "34.105.97.123", # BE VM GCP
+    # TODO add FE url here
+]
 
 
 # Application definition
