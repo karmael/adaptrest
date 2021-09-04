@@ -9,6 +9,7 @@ source venv/bin/activate
 python -m pip install -r requirements.txt
 
 cp db.sqlite3.example db.sqlite3
+cp .env.example .env
 
 python manage.py makemigrations
 python manage.py migrate

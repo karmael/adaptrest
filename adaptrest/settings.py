@@ -31,7 +31,9 @@ SECRET_KEY = 'django-insecure-!9=3ya*j7xo(by-ni&chf@4u1*8(_wlg&s4c7s#56sj42*$79x
 DEBUG = os.environ.get('DEPLOY') == 'local'
 
 ALLOWED_HOSTS = [
-    "34.105.97.123", # BE VM GCP
+    "0.0.0.0",
+    "localhost",
+    "34.105.97.123",  # BE VM GCP
     # TODO add FE url here
 ]
 
