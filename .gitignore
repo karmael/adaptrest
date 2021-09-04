@@ -277,3 +277,6 @@ apollo/media/
 .env
 .envs/*
 !.envs/.local/
+
+### Project specific
+db.sqlite3
