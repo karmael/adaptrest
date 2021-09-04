@@ -24,7 +24,20 @@ or
 bash scripts/setup.sh
 ```
 2. Update environment variables (.env file)
-3. Running Server (local)
+
+## Testing
+```bash
+MODULE="${1:-api}"
+[[ "$MODULE" != "api" ]] && MODULE="api.tests.${MODULE}"
+python manage.py test $MODULE --keepdb
+```
+or
+```bash
+bash scripts/test.sh
+```
+
+## Deploying
+1. Using django runserver
 ```bash
 source venv/bin/activate
 export DEPLOY=local
@@ -36,10 +49,7 @@ or
 ```bash
 bash scripts/run.sh
 ```
-
-## Deploying
-1. Refer to "Developing" section for setup process
-2. Running Server (using gunicorn)
+2. Using gunicorn
 ```bash
 source venv/bin/activate
 export DEPLOY=live
