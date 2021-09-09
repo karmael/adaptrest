@@ -130,10 +130,6 @@ class ForgotPasswordSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'new_password')
-        extra_kwargs = {
-            'first_name': {'required': True},
-            'last_name': {'required': True},
-        }
 
     def validate_username(self, value):
         user = self.context['request'].user
