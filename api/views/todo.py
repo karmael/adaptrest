@@ -1,138 +1,142 @@
+from django.utils.decorators import method_decorator
 from api.serializers import TodoSerializer, TodoItemSerializer
 from django.http.response import JsonResponse
 from api.models import Todo, TodoItem
 from api.views.base import ProtectedView
 
+from api.utils import check_post_data
+
 
 class TodoAllView(ProtectedView):
-    def get(self, request):
+    def get(self, request, session):
         return JsonResponse({
-            "items": TodoSerializer(Todo.objects.filter(user=self.user["google_id"]), many=True).data,
+            "items": TodoSerializer(Todo.objects.filter(user_id=self.user["google_id"]), many=True).data,
         })
 
-
-class TodoView(ProtectedView):
-    def get(self, request, todo_id):
-        return JsonResponse({
-            "items": TodoSerializer(TodoItem.objects.filter(todo_id=todo_id), many=True).data,
-        })
-
-    def update(self, request, todo_id):
+    @method_decorator(check_post_data)
+    def post(self, request, session, data):
         try:
-            to_update = request.body
-            # TODO validate
-            todo = Todo.objects.filter(
-                user=self.user["google_id"],
-                todo_id=todo_id
-            )
-            if todo is not None:
-                todo.update(
-                    name=to_update["name"]
-                )
-            return JsonResponse({
-                "success": True,
-                "msg": TodoItemSerializer(todo).data,
-            })
-        except Exception:
-            return JsonResponse({
-                "success": False,
-            }, status=400)
-
-    def post(self, request, todo_id):
-        try:
-            to_post = request.body
-            # TODO validate
+            # TODO validate data
             todo = Todo.objects.create(
-                user=self.user["google_id"],
-                name=to_post["name"]
+                user_id=self.user["google_id"],
+                name=data["name"],
             )
             return JsonResponse({
                 "success": True,
                 "msg": TodoSerializer(todo).data,
             })
-        except Exception:
+        except Exception as e:
             return JsonResponse({
                 "success": False,
+                "msg": str(e),
             }, status=400)
 
-    def delete(self, request, todo_id):
+
+class TodoView(ProtectedView):
+    def get(self, request, session, todo_id):
+        return JsonResponse({
+            "items": TodoItemSerializer(TodoItem.objects.filter(todo_id=todo_id), many=True).data,
+        })
+
+    @method_decorator(check_post_data)
+    def put(self, request, session, data, todo_id):
         try:
+            # TODO validate
             todo = Todo.objects.filter(
-                user=self.user["google_id"],
-                todo_id=todo_id,
+                user_id=self.user["google_id"],
+                id=todo_id,
             )
             if todo is not None:
-                todo.destroy()
+                todo.update(
+                    name=data["name"]
+                )
+            return JsonResponse({
+                "success": True,
+                "msg": TodoSerializer(todo.first()).data,
+            })
+        except Exception as e:
+            return JsonResponse({
+                "success": False,
+                "msg": str(e),
+            }, status=400)
+
+    def delete(self, request, session, todo_id):
+        try:
+            todo = Todo.objects.filter(
+                user_id=self.user["google_id"],
+                id=todo_id,
+            )
+            if todo is not None:
+                todo.delete()
             return JsonResponse({
                 "success": True,
             })
-        except Exception:
+        except Exception as e:
             return JsonResponse({
                 "success": False,
+                "msg": str(e),
+            }, status=400)
+
+    @method_decorator(check_post_data)
+    def post(self, request, session, data, todo_id):
+        try:
+            # TODO validate
+            todo_item = TodoItem.objects.create(
+                todo_id=todo_id,
+                **data,
+            )
+            return JsonResponse({
+                "success": True,
+                "msg": TodoItemSerializer(todo_item).data,
+            })
+        except Exception as e:
+            return JsonResponse({
+                "success": False,
+                "msg": str(e),
             }, status=400)
 
 
 class TodoDetailView(ProtectedView):
-    def get(self, request, todo_id, item_id):
+    def get(self, request, session, todo_id, item_id):
         return JsonResponse({
-            "items": TodoSerializer(TodoItem.objects.filter(todo_id=todo_id, item_id=item_id), many=True).data,
+            "items": TodoItemSerializer(TodoItem.objects.filter(todo_id=todo_id, item_id=item_id).first).data,
         })
 
-    def update(self, request, todo_id, item_id):
+    @method_decorator(check_post_data)
+    def put(self, request, session, data, todo_id, item_id):
         try:
-            to_update = request.body
             # TODO validate
             todo_item = TodoItem.objects.filter(
-                user=self.user["google_id"],
                 todo_id=todo_id,
-                item_id=item_id,
+                id=item_id,
             )
             if todo_item is not None:
                 todo_item.update(
-                    desc=to_update["desc"],
-                    image=to_update["image"],
-                    status=to_update["status"],
+                    **data
                 )
             return JsonResponse({
                 "success": True,
-                "msg": TodoItemSerializer(todo_item).data,
+                "msg": TodoItemSerializer(todo_item.first()).data,
             })
-        except Exception:
+        except Exception as e:
             return JsonResponse({
                 "success": False,
+                "msg": str(e),
             }, status=400)
 
-    def post(self, request, todo_id):
-        try:
-            to_post = request.body
-            # TODO validate
-            todo_item = TodoItem.objects.create(
-                todo_id=todo_id,
-                desc=to_post["desc"],
-                image=to_post["image"],
-                status=to_post["status"],
-            )
-            return JsonResponse({
-                "success": True,
-                "msg": TodoItemSerializer(todo_item).data,
-            })
-        except Exception:
-            return JsonResponse({
-                "success": False,
-            }, status=400)
-
-    def delete(self, request, todo_id, item_id):
+    def delete(self, request, session, todo_id, item_id):
         try:
             todo_item = TodoItem.objects.filter(
                 todo_id=todo_id,
-                item_id=item_id,
+                id=item_id,
             )
             if todo_item is not None:
-                todo_item.destroy()
+                todo_item.delete()
             return JsonResponse({
                 "success": True,
             })
-        except Exception:
+        except Exception as e:
             return JsonResponse({
                 "success": False,
+                "msg": str(e),
             }, status=400)

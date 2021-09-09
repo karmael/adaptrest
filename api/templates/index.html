@@ -13,23 +13,23 @@
 
 <body>
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <h2>Note: Didn't work on VM</h2>
+    <h2>Note: Didn't work on VM as</h2>
     <p>Logged in as:</p>
     <textarea id="info" rows="8" cols="120"></textarea>
     <p>ID Token:</p>
     <textarea id="id-token" rows="8" cols="120"></textarea>
     <script>
         function onSignIn(googleUser) {
-            // console.log(googleUser);
+            console.log(googleUser);
             var id_token = googleUser.getAuthResponse().id_token;
             var profile = googleUser.getBasicProfile();
             console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
             console.log('Name: ' + profile.getName());
             console.log('Image URL: ' + profile.getImageUrl());
             console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-            // console.log(id_token);
+            console.log(id_token);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/api/login/');
+            xhr.open('POST', '/api/login_google/');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.setRequestHeader('oauth-token', id_token);
             xhr.onload = function () {
