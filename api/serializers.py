@@ -11,6 +11,8 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
+from rest_framework.response import Response
+from rest_framework import status
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -47,7 +49,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
 
-        return user
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
@@ -81,7 +83,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         instance.set_password(validated_data['password'])
         instance.save()
 
-        return instance
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 
 class UpdateUserSerializer(serializers.ModelSerializer):
@@ -120,7 +122,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
         instance.save()
 
-        return instance
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 class ForgotPasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -139,10 +141,10 @@ class ForgotPasswordSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"username": "username not found."})
         return value
 
-    def update(self, instance):
+    def update(self, instance, validated_data):
         user = self.context['request'].user
 
         instance.set_password(validated_data['new_password'])
         instance.save()
 
-        return instance
+        return Response(status=status.HTTP_202_ACCEPTED)

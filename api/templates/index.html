@@ -20,7 +20,7 @@
     <textarea id="id-token" rows="8" cols="120"></textarea>
     <script>
         function onSignIn(googleUser) {
-            console.log(googleUser);
+            // console.log(googleUser);
             var id_token = googleUser.getAuthResponse().id_token;
             var profile = googleUser.getBasicProfile();
             console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
