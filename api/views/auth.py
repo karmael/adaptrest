@@ -59,7 +59,6 @@ class LoginView(View):
             key=os.environ.get('JWT_SECRET'),
             algorithm='HS256'
         )
-        encoded_jwt = encoded_jwt.decode("utf-8")
 
         create_or_save(user_def)
         request.session['token'] = encoded_jwt

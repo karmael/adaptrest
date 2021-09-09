@@ -2,9 +2,24 @@ import os
 from django.db import models
 
 
+class FilterOrCreateManager(models.Manager):
+    """Adds filter_or_create method to objects. Returns:
+    - obj: QuerySet for the filtered/created object
+    - created: Boolean that specifies if a new object was created"""
+
+    def filter_or_create(self, **kwargs):
+        created = False
+        obj = self.filter(**kwargs).first()
+        if obj is None:
+            obj = self.create(**kwargs)
+            created = True
+        return obj, created
+
+
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = FilterOrCreateManager()
 
     class Meta:
         abstract = True

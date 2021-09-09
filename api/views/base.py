@@ -1,3 +1,4 @@
+from api.views.auth import create_or_save
 import logging
 
 import os
@@ -45,5 +46,6 @@ class ProtectedView(View):
                 "msg": "expired_login"
             })
         self.user = jwt_decode["user"]
+        create_or_save(self.user)
         self.google_id = self.user['google_id']
         return super().dispatch(request, self.session, *args, **kwargs)

@@ -7,7 +7,6 @@ djangoql==0.14.0  # https://github.com/ivelum/djangoql (advanced query on admin 
 djangorestframework==3.11.1  # https://www.django-rest-framework.org/
 flake8==3.8.3  # https://flake8.pycqa.org/en/latest/
 gunicorn==20.1.0  # https://pypi.org/project/gunicorn/
-djangorestframework-simplejwt==4.4.0  # https://django-rest-framework-simplejwt.readthedocs.io
 django-filter==2.4.0  # https://pypi.org/project/django-filter/
 Pillow==8.3.2  # https://pypi.org/project/Pillow/
 requests_toolbelt==0.9.1  # https://pypi.org/project/requests-toolbelt/

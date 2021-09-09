@@ -8,10 +8,9 @@ from api.models import Todo, TodoItem
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-
 class LoginTokenSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
-        try :
+        try:
             data = super().validate(attrs)
             refresh = self.get_token(self.user)
             data['refresh'] = str(refresh)
@@ -21,8 +20,8 @@ class LoginTokenSerializer(TokenObtainPairSerializer):
             data['email'] = self.user.email
             data['password'] = self.user.password
             return Response(status=status.HTTP_200_OK)
-        
-        except :
+
+        except Exception:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
@@ -144,7 +143,7 @@ class ForgotPasswordSerializer(serializers.ModelSerializer):
         fields = ('username', 'new_password')
 
     def validate_username(self, value, attrs):
-        user = self.context['request'].user
+        _ = self.context['request'].user
         if not User.objects.get(id=attrs['username']):
             raise serializers.ValidationError({"username": "username not found."})
         return value
@@ -165,6 +164,12 @@ class TodoSerializer(serializers.ModelSerializer):
 
 
 class TodoItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TodoItem
+        fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = TodoItem
         fields = '__all__'

@@ -35,6 +35,7 @@ ALLOWED_HOSTS = [
     "localhost",
     '127.0.0.1',
     "34.105.97.123",  # BE VM GCP
+    '34.105.97.123.nip.io',
     # TODO add FE url here
 ]
 
