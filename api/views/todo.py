@@ -1,3 +1,6 @@
+import io
+from django.core.files.images import ImageFile
+
 from django.utils.decorators import method_decorator
 from api.serializers import TodoSerializer, TodoItemSerializer
 from django.http.response import JsonResponse
@@ -103,9 +106,13 @@ class TodoDetailView(ProtectedView):
         })
 
     @method_decorator(check_post_data)
-    def put(self, request, session, data, todo_id, item_id):
+    def put(self, request, session, data, todo_id, item_id, is_form=False):
         try:
             # TODO validate
+            if is_form:
+                data = {
+                    "image": ImageFile(io.BytesIO(data["content"]), name=data["params"]["filename"]),
+                }
             todo_item = TodoItem.objects.filter(
                 todo_id=todo_id,
                 id=item_id,

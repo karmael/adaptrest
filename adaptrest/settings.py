@@ -155,4 +155,4 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': False
 }
 
-MEDIA_ROOT = os.environ.get("MEDIA_ROOT")
+MEDIA_ROOT = os.environ.get("MEDIA_ROOT_PATH")
