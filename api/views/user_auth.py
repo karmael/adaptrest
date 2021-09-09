@@ -22,17 +22,15 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 
 class UpdateProfileView(generics.UpdateAPIView):
-
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = UpdateUserSerializer
 
-class ForgotPasswordView(generics.UpdateAPIView):
 
+class ForgotPasswordView(generics.UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = ForgotPasswordSerializer
-
 
 
 class LogoutView(APIView):
@@ -45,7 +43,7 @@ class LogoutView(APIView):
             token.blacklist()
 
             return Response(status=status.HTTP_205_RESET_CONTENT)
-        except Exception as e:
+        except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
