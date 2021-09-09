@@ -2,14 +2,14 @@ from django.urls import path
 
 from api.views.auth import LoginView
 from api.views.user import UserInfoView
-from api.views.user_auth import RegisterView, ChangePasswordView, UpdateProfileView, LogoutView, LogoutAllView, ForgotPasswordView
+from api.views.user_auth import RegisterView, ChangePasswordView, UpdateProfileView, LogoutView, LogoutAllView, ForgotPasswordView, LoginTokenView
 from api.views.todo import TodoAllView, TodoView, TodoDetailView
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
 urlpatterns = [
     path('user_info/', UserInfoView.as_view()),
     path('login_google/', LoginView.as_view()),
-    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login/', LoginTokenView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', RegisterView.as_view(), name='auth_register'),
     path('forgot_password/', ForgotPasswordView.as_view(), name='auth_forgot_password'),
