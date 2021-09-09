@@ -1,4 +1,4 @@
-from ..serializers import RegisterSerializer, ChangePasswordSerializer, UpdateUserSerializer, ForgotPasswordSerializer
+from ..serializers import RegisterSerializer, ChangePasswordSerializer, UpdateUserSerializer, ForgotPasswordSerializer, LoginTokenSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import generics
 from django.contrib.auth.models import User
@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 class LoginTokenView(TokenObtainPairView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
-    serializer_class = MyTokenObtainPairSerializer
+    serializer_class = LoginTokenSerializer
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
