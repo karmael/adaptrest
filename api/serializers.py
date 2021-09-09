@@ -5,12 +5,25 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework.response import Response
 from rest_framework import status
 from api.models import Todo, TodoItem
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = '__all__'
+
+class LoginTokenSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        try :
+            data = super().validate(attrs)
+            refresh = self.get_token(self.user)
+            data['refresh'] = str(refresh)
+            data['access'] = str(refresh.access_token)
+
+            # Add extra responses here
+            data['email'] = self.user.email
+            data['password'] = self.user.password
+            return Response(status=status.HTTP_200_OK)
+        
+        except :
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 class RegisterSerializer(serializers.ModelSerializer):
