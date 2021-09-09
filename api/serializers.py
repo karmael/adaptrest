@@ -1,5 +1,10 @@
-# from rest_framework import serializers
-# from api.models import User
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from rest_framework.validators import UniqueValidator
+from django.contrib.auth.password_validation import validate_password
+from rest_framework.response import Response
+from rest_framework import status
+from api.models import Todo, TodoItem
 
 
 # class UserSerializer(serializers.ModelSerializer):
@@ -7,19 +12,12 @@
 #         model = User
 #         fields = '__all__'
 
-from rest_framework import serializers
-from django.contrib.auth.models import User
-from rest_framework.validators import UniqueValidator
-from django.contrib.auth.password_validation import validate_password
-from rest_framework.response import Response
-from rest_framework import status
-
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
-            required=True,
-            validators=[UniqueValidator(queryset=User.objects.all())]
-            )
+        required=True,
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
 
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
@@ -124,6 +122,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
         return Response(status=status.HTTP_202_ACCEPTED)
 
+
 class ForgotPasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
 
@@ -138,9 +137,21 @@ class ForgotPasswordSerializer(serializers.ModelSerializer):
         return value
 
     def update(self, instance, validated_data):
-        user = self.context['request'].user
+        _ = self.context['request'].user
 
         instance.set_password(validated_data['new_password'])
         instance.save()
 
         return Response(status=status.HTTP_202_ACCEPTED)
+
+
+class TodoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Todo
+        fields = '__all__'
+
+
+class TodoItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TodoItem
+        fields = '__all__'

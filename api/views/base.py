@@ -19,12 +19,24 @@ class ProtectedView(View):
     @method_decorator(decorators)
     def dispatch(self, request, *args, **kwargs):
         self.session = request.session
-        token = request.META.get('HTTP_ADAPT_TOKEN')
-        jwt_decode = jwt.decode(
-            token,
-            os.environ.get('JWT_SECRET'),
-            algorithm='HS256'
-        )
+        token = request.META.get('HTTP_AUTHORIZATION').split(" ")
+        if len(token) != 2 or token[0] != "Bearer":
+            return JsonResponse({
+                "success": False,
+                "msg": "token_error",
+            }, status=400)
+        token = token[1]
+        try:
+            jwt_decode = jwt.decode(
+                token,
+                os.environ.get('JWT_SECRET'),
+                algorithms='HS256'
+            )
+        except Exception:
+            return JsonResponse({
+                "success": False,
+                "msg": "jwt_decode_error",
+            }, status=400)
         if jwt_decode['exp'] < datetime.now().timestamp():
             return JsonResponse({
                 "success": False,
