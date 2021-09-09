@@ -81,9 +81,11 @@ class TodoView(ProtectedView):
             }, status=400)
 
     @method_decorator(check_post_data)
-    def post(self, request, session, data, todo_id):
+    def post(self, request, session, data, todo_id, is_form=False):
         try:
             # TODO validate
+            if is_form:
+                data = {"image": ImageFile(io.BytesIO(data["content"]), name=data["params"]["filename"])}
             todo_item = TodoItem.objects.create(
                 todo_id=todo_id,
                 **data,
@@ -110,9 +112,7 @@ class TodoDetailView(ProtectedView):
         try:
             # TODO validate
             if is_form:
-                data = {
-                    "image": ImageFile(io.BytesIO(data["content"]), name=data["params"]["filename"]),
-                }
+                data = {"image": ImageFile(io.BytesIO(data["content"]), name=data["params"]["filename"])}
             todo_item = TodoItem.objects.filter(
                 todo_id=todo_id,
                 id=item_id,

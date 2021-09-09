@@ -157,3 +157,4 @@ SIMPLE_JWT = {
 }
 
 MEDIA_ROOT = os.environ.get("MEDIA_ROOT_PATH")
+MEDIA_URL = os.environ.get("MEDIA_URL")
