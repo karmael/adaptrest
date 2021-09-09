@@ -40,6 +40,8 @@ class LoginView(View):
             idinfo = id_token.verify_oauth2_token(token, requests.Request(), os.environ.get('CLIENT_ID'))
         except ValueError:
             return HttpResponse(status=400)
+        if 'hd' not in idinfo:
+            idinfo['hd'] = None
         user_def = {
             'google_id': idinfo['sub'],
             'username': idinfo['given_name'],
