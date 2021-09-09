@@ -64,4 +64,4 @@ class LoginView(View):
         return JsonResponse({
             "token": encoded_jwt,
             "user": user_def,
-        })
+        }) 
