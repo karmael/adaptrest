@@ -1,3 +1,4 @@
+import os
 from django.db import models
 
 
@@ -15,7 +16,7 @@ class User(BaseModel):
     fullname = models.CharField(max_length=50, null=True, blank=True)
     picture = models.CharField(max_length=50, null=True, blank=True)
     company = models.CharField(max_length=50, null=True, blank=True)
-    email = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(max_length=50, unique=True)
 
     class Meta:
         db_table = "user"
@@ -40,7 +41,7 @@ class TodoItem(BaseModel):
         on_delete=models.CASCADE,
     )
     desc = models.TextField(null=True, blank=True)
-    image = models.TextField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to=os.environ.get("MEDIA_URL"))
     status = models.BooleanField(default=False)
 
     class Meta:

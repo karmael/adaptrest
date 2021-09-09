@@ -2,7 +2,6 @@ import logging
 
 import os
 import jwt
-import json
 from datetime import datetime
 
 from django.views import View
@@ -19,13 +18,16 @@ class ProtectedView(View):
     @method_decorator(decorators)
     def dispatch(self, request, *args, **kwargs):
         self.session = request.session
-        token = request.META.get('HTTP_AUTHORIZATION').split(" ")
-        if len(token) != 2 or token[0] != "Bearer":
+        try:
+            token = request.META.get('HTTP_AUTHORIZATION').split(" ")
+            if len(token) != 2 or token[0] != "Bearer":
+                raise Exception()
+            token = token[1]
+        except Exception:
             return JsonResponse({
                 "success": False,
                 "msg": "token_error",
             }, status=400)
-        token = token[1]
         try:
             jwt_decode = jwt.decode(
                 token,
@@ -44,6 +46,4 @@ class ProtectedView(View):
             })
         self.user = jwt_decode["user"]
         self.google_id = self.user['google_id']
-        if request.body:
-            self.payload = json.loads(request.body)
         return super().dispatch(request, self.session, *args, **kwargs)

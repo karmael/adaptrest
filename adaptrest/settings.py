@@ -154,3 +154,5 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False
 }
+
+MEDIA_ROOT = os.environ.get("MEDIA_ROOT")

@@ -65,4 +65,3 @@ class LoginView(View):
             "token": encoded_jwt,
             "user": user_def,
         })
-

@@ -10,6 +10,10 @@ def check_post_data(f):
         if request.body == b"":
             return JsonResponse({'msg': "invalid_param"}, status=400)
         if isinstance(request.body, bytes):
-            return f(request, session, json.loads(request.body.decode("utf-8")), *args, **kwargs)
+            try:
+                return f(request, session, json.loads(request.body.decode("utf-8")), *args, **kwargs)
+            except UnicodeDecodeError:
+                print(request.body)
+                return f(request, session, request.body.image, *args, **kwargs)
         return f(request, session, json.loads(request.body), *args, **kwargs)
     return wrapper
