@@ -28,20 +28,23 @@ class Todo(BaseModel):
         on_delete=models.CASCADE,
     )
     name = models.CharField(max_length=127)
-
-    class Meta:
-        db_table = "todo"
-
-
-class TodoItem(BaseModel):
-    todo = models.ForeignKey(
-        Todo,
-        to_field="id",
-        on_delete=models.CASCADE,
-    )
     desc = models.TextField(null=True, blank=True)
     image = models.TextField(null=True, blank=True)
     status = models.BooleanField(default=False)
 
     class Meta:
-        db_table = "todo_item"
+        db_table = "todo"
+
+
+#class TodoItem(BaseModel):
+#    todo = models.ForeignKey(
+#        Todo,
+#        to_field="id",
+#        on_delete=models.CASCADE,
+#    )
+#    desc = models.TextField(null=True, blank=True)
+#    image = models.TextField(null=True, blank=True)
+#    status = models.BooleanField(default=False)
+#
+#    class Meta:
+#        db_table = "todo_item"

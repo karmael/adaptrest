@@ -11,6 +11,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
+from .models impor Todo, TodoItem
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -146,3 +147,9 @@ class ForgotPasswordSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class TodoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Todo
+        fields = __all__
