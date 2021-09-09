@@ -130,9 +130,9 @@ class ForgotPasswordSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'new_password')
 
-    def validate_username(self, value):
+    def validate_username(self, value, attrs):
         user = self.context['request'].user
-        if not User.objects.exclude(pk=user.pk).filter(username=value).exists():
+        if not User.objects.get(id=attrs['username']):
             raise serializers.ValidationError({"username": "username not found."})
         return value
 
