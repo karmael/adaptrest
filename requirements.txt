@@ -1,4 +1,12 @@
-asgiref==3.4.1 # https://github.com/django/asgiref
-Django==3.2.7 # https://www.djangoproject.com/
-pytz==2021.1 # https://github.com/stub42/pytz
-sqlparse==0.4.1 # https://github.com/andialbrecht/sqlparse
+requests==2.24.0  # https://docs.python-requests.org/en/master/
+gevent==20.6.2  # https://pypi.org/project/gevent/
+Django==3.2.7  # https://docs.djangoproject.com/en/3.2/
+python-dotenv==0.17.1  # https://pypi.org/project/python-dotenv/ (loads .env to python project)
+google-auth==1.30.1  # https://google-auth.readthedocs.io/en/master/
+djangoql==0.14.0  # https://github.com/ivelum/djangoql (advanced query on admin page)
+djangorestframework==3.11.1  # https://www.django-rest-framework.org/
+flake8==3.8.3  # https://flake8.pycqa.org/en/latest/
+gunicorn==20.1.0  # https://pypi.org/project/gunicorn/
+django-filter==2.4.0  # https://pypi.org/project/django-filter/
+Pillow==8.3.2  # https://pypi.org/project/Pillow/
+requests_toolbelt==0.9.1  # https://pypi.org/project/requests-toolbelt/
